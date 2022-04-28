@@ -1,0 +1,24 @@
+{
+  "name": "ben-awad-interview",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "parcel src/index.html",
+    "format": "prettier --write .",
+    "lint": "eslint ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.14.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-react": "^7.29.4",
+    "parcel": "^2.5.0",
+    "prettier": "^2.6.2"
+  }
+}
