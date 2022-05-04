@@ -87,12 +87,12 @@ const App = () => {
   }
 
   const handleFilter = (event) => {
-    setFilterBy(event.target.value.toLowerCase())
+    setFilterBy(event.target.value)
   }
 
   const filterByInput = (item) => {
     return Object.values(item).some((value) =>
-      value.toString().toLowerCase().includes(filterBy)
+      value.toString().toLowerCase().includes(filterBy.toLowerCase())
     )
   }
 
