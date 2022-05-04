@@ -2,6 +2,8 @@ import { useState, useEffect } from "react"
 
 const apiUrl = "https://randomuser.me/api/?results=20"
 
+const ORDER_ARROW = { default: "", ascending: "🔽", descending: "🔼" }
+
 const flattenData = (toFlatten) => {
   let result = {}
   for (const key in toFlatten) {
@@ -28,13 +30,15 @@ const App = () => {
 
       const jsonData = await response.json()
       console.log(jsonData)
-      const result = jsonData.results.map((item) => flattenData(item.location))
-      console.log(result)
+      const result = jsonData.results.map((item, index) => {
+        return { ...flattenData(item.location), id: index }
+      })
+
       setData(result)
       setHeaders(Object.keys(result[0]))
       setOrder(
         Object.keys(result[0]).reduce(
-          (acc, value) => ({ ...acc, [value]: true }),
+          (acc, value) => ({ ...acc, [value]: "default" }),
           {}
         )
       )
@@ -42,12 +46,28 @@ const App = () => {
     fetchData()
   }, [])
 
+  const nextSortOrder = (columnName) => {
+    if (order[columnName] === "default") {
+      return "ascending"
+    } else if (order[columnName] === "ascending") {
+      return "descending"
+    } else if (order[columnName] === "descending") {
+      return "default"
+    }
+  }
+
   const handleSort = (columnName) => {
-    const asc = order[columnName]
-    order[columnName] = !asc
-    console.log(data)
+    const newSortOrder = nextSortOrder(columnName)
+
+    setOrder({ ...order, [columnName]: newSortOrder })
 
     const sortedData = [...data].sort((a, b) => {
+      if (newSortOrder === "default") {
+        return a.id - b.id
+      }
+
+      const asc = newSortOrder === "ascending"
+
       const nameA = a[columnName]
       const nameB = b[columnName]
       if (nameA < nameB) {
@@ -59,11 +79,9 @@ const App = () => {
       return 0
     })
     setData(sortedData)
-    console.log(sortedData)
   }
 
   const handleColumnClick = (item) => {
-    console.log(item)
     handleSort(item)
     setSortedBy(item)
   }
@@ -76,7 +94,7 @@ const App = () => {
           <tr>
             {headers.map((item) => (
               <th key={item} onClick={() => handleColumnClick(item)}>
-                {item} {sortedBy === item ? (order[item] ? "🔽" : "🔼") : ""}
+                {item} {sortedBy === item ? ORDER_ARROW[order[item]] : ""}
               </th>
             ))}
           </tr>
