@@ -8,7 +8,40 @@ html {
   box-sizing: inherit;
 }
 
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
 .container {
-  max-width: 600px;
+  max-width: 900px;
   margin: auto;
+}
+
+table {
+  margin: 1em;
+  border: 1px solid black;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+th {
+  text-transform: capitalize;
+  text-align: center;
+  padding: 0.3em;
+  border: 1px solid black;
+  background-color: rgb(230, 230, 230);
+}
+
+td {
+  text-align: center;
+  padding: 0.3em;
+  border: 1px solid black;
+}
+
+tbody tr:nth-child(even) {
+  background-color: rgb(230, 230, 230);
+}
+
+input {
+  margin-left: 1em;
 }
