@@ -9,3 +9,7 @@ It consists of a react app which:
 - Displays the results in a table
 - Allows it to be sorted in ascending, descending and the default order by clicking the table column headers
 - Allows the rows to be filtered by typing in the text box
+
+
+https://user-images.githubusercontent.com/357604/166725381-8e5eae5c-d6c0-4fae-8589-40029a3b43c6.mp4
+
