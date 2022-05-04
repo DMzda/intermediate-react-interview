@@ -23,19 +23,19 @@ const App = () => {
   const [headers, setHeaders] = useState([])
   const [order, setOrder] = useState({})
   const [sortedBy, setSortedBy] = useState("")
+  const [filterBy, setFilterBy] = useState("")
 
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(apiUrl)
-
       const jsonData = await response.json()
-      console.log(jsonData)
+
       const result = jsonData.results.map((item, index) => {
         return { ...flattenData(item.location), id: index }
       })
 
       setData(result)
-      setHeaders(Object.keys(result[0]))
+      setHeaders(Object.keys(result[0]).filter((header) => header !== "id"))
       setOrder(
         Object.keys(result[0]).reduce(
           (acc, value) => ({ ...acc, [value]: "default" }),
@@ -86,9 +86,28 @@ const App = () => {
     setSortedBy(item)
   }
 
+  const handleFilter = (event) => {
+    setFilterBy(event.target.value.toLowerCase())
+  }
+
+  const filterByInput = (item) => {
+    return Object.values(item).some((value) =>
+      value.toString().toLowerCase().includes(filterBy)
+    )
+  }
+
   return (
     <div className="container">
       <h1>Addresses</h1>
+      <label>
+        Filter by:
+        <input
+          type="text"
+          name="filter"
+          value={filterBy}
+          onChange={handleFilter}
+        />
+      </label>
       <table>
         <thead>
           <tr>
@@ -100,7 +119,7 @@ const App = () => {
           </tr>
         </thead>
         <tbody>
-          {data.map((item) => (
+          {data.filter(filterByInput).map((item) => (
             <tr key={item.number + item.postcode}>
               {headers.map((header) => (
                 <td key={header}>{item[header]}</td>
